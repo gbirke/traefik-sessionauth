@@ -1,5 +1,6 @@
 <?php
 
+use Birke\TraefikSessionAuth\Bootstrap;
 use Birke\TraefikSessionAuth\Config;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -11,14 +12,19 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . './../');
 $dotenv->load();
 $dotenv->required('USERS')->notEmpty();
 
-$config = new Config($_SERVER);
+$container = Bootstrap::createContainer($_ENV['APP_ENV'] ?? 'dev');
+/** @var Config */
+$config = $container->get('config');
 
+
+// TODO use Slim session
 if ($config->cookieDomain !== '') {
     session_set_cookie_params(['domain' => $config->cookieDomain]);
 }
 session_name($config->cookieName);
 session_start();
 
+AppFactory::setContainer($container);
 $app = AppFactory::create();
 
 // Check Authentication
@@ -39,7 +45,9 @@ $app->get('/', function (Request $request, Response $response, $args) {
 });
 
 // Process login form
-$app->post('/login', function (Request $request, Response $response, $args) use ($config) {
+$app->post('/login', function (Request $request, Response $response, $args) {
+    /* @var Config */
+    $config = $this->get('config');
     $params = (array)$request->getParsedBody();
     $username = $params['username'] ?? '';
     $password = $params['password'] ?? '';

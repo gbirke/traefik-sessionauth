@@ -37,6 +37,7 @@ To use the pre-commit git hooks, run
 
 ## Planned future features
 * Redirection parameter to return to original page
+* Unit tests and static analysis
 * Templating for user-accessible pages
 * Show form again when login fails
 * Add Dockerfile and build
