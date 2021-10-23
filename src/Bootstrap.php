@@ -29,8 +29,8 @@ class Bootstrap
             "cfg.cookieDomain" => env('COOKIE_DOMAIN', ''),
 
             // Instances
-            Config::class => factory(function (ContainerInterface $c) {
-                return new Config(
+            Users::class => factory(function (ContainerInterface $c) {
+                return new Users(
                     $c->get('cfg.users'),
                 );
             }),

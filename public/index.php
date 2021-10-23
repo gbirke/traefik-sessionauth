@@ -1,7 +1,7 @@
 <?php
 
 use Birke\TraefikSessionAuth\Bootstrap;
-use Birke\TraefikSessionAuth\Config;
+use Birke\TraefikSessionAuth\Users;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
@@ -38,20 +38,22 @@ $app->get('/', function (Request $request, Response $response, $args) {
 
 // Process login form
 $app->post('/login', function (Request $request, Response $response, $args) {
-    /* @var Config */
-    $config = $this->get(Config::class);
     $params = (array)$request->getParsedBody();
     $username = $params['username'] ?? '';
     $password = $params['password'] ?? '';
-    if (empty($config->users[$username]) || !password_verify($password, $config->users[$username])) {
-        $response->getBody()->write("Login failed");
-        return $response->withStatus(401);
+
+    /* @var Users */
+    $users = $this->get(Users::class);
+    if ($users->userExists($username) && $users->verifyPassword($username, $password)) {
+        $_SESSION['username'] = $username;
+        $query = $request->getQueryParams();
+        // TODO redirect with query params, to x-forwarded-host or to FQDN
+        return $response->withStatus(302)
+            ->withHeader("Location", "/");
     }
-    $_SESSION['username'] = $username;
-    $query = $request->getQueryParams();
-    // TODO redirect with query params, to x-forwarded-host or to FQDN
-    return $response->withStatus(302)
-        ->withHeader("Location", "/");
+
+    $response->getBody()->write("Login failed");
+    return $response->withStatus(401);
 });
 
 // Show login form
