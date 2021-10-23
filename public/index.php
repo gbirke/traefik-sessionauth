@@ -37,7 +37,7 @@ $app->post('/login', function (Request $request, Response $response, $args) {
     // TODO avoid hardcoding
     if ($username !== 'user' || $password !== 'insecure') {
         $response->getBody()->write("Login failed");
-        return $response->withStatus(403);
+        return $response->withStatus(401);
     }
     $_SESSION['username'] = $username;
     $query = $request->getQueryParams();
