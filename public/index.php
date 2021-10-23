@@ -1,13 +1,22 @@
 <?php
 
+use Birke\TraefikSessionAuth\Config;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-// TODO avoid domain hardcoding
-//session_set_cookie_params(['domain'=>'.example.com']);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . './../');
+$dotenv->load();
+$dotenv->required('USERS')->notEmpty();
+
+$config = new Config($_SERVER);
+
+if ($config->cookieDomain !== '') {
+    session_set_cookie_params(['domain' => $config->cookieDomain]);
+}
+session_name($config->cookieName);
 session_start();
 
 $app = AppFactory::create();
@@ -30,12 +39,11 @@ $app->get('/', function (Request $request, Response $response, $args) {
 });
 
 // Process login form
-$app->post('/login', function (Request $request, Response $response, $args) {
+$app->post('/login', function (Request $request, Response $response, $args) use ($config) {
     $params = (array)$request->getParsedBody();
     $username = $params['username'] ?? '';
     $password = $params['password'] ?? '';
-    // TODO avoid hardcoding
-    if ($username !== 'user' || $password !== 'insecure') {
+    if (empty($config->users[$username]) || !password_verify($password, $config->users[$username])) {
         $response->getBody()->write("Login failed");
         return $response->withStatus(401);
     }
