@@ -35,6 +35,12 @@ directory.
 **TODO:** describe how to override templates when using Docker
 
 
+## Running the application
+Run `docker-compose up` to run the application as a standalone
+application. On its own, it's not very useful but you can use the
+`docker-compose.yml` setup for development or to try out the functionality
+without a Traefik setup.
+
 ## Traefik setup
 
 **TODO:** describe setup
