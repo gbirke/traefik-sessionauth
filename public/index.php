@@ -13,19 +13,11 @@ $dotenv->load();
 $dotenv->required('USERS')->notEmpty();
 
 $container = Bootstrap::createContainer($_ENV['APP_ENV'] ?? 'dev');
-/** @var Config */
-$config = $container->get('config');
-
-
-// TODO use Slim session
-if ($config->cookieDomain !== '') {
-    session_set_cookie_params(['domain' => $config->cookieDomain]);
-}
-session_name($config->cookieName);
-session_start();
 
 AppFactory::setContainer($container);
 $app = AppFactory::create();
+
+$app->add($container->get('middlewares.session'));
 
 // Check Authentication
 $app->get('/auth', function (Request $request, Response $response, $args) {
@@ -47,7 +39,7 @@ $app->get('/', function (Request $request, Response $response, $args) {
 // Process login form
 $app->post('/login', function (Request $request, Response $response, $args) {
     /* @var Config */
-    $config = $this->get('config');
+    $config = $this->get(Config::class);
     $params = (array)$request->getParsedBody();
     $username = $params['username'] ?? '';
     $password = $params['password'] ?? '';

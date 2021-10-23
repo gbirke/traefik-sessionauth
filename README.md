@@ -40,6 +40,7 @@ To use the pre-commit git hooks, run
 * Unit tests and static analysis
 * Templating for user-accessible pages
 * Show form again when login fails
+* Add CI (GitHub Actions)
 * Add Dockerfile and build
 * Support for CORS headers instead of central cookie domain
 * "Remember me" cookie for more independence from PHP sessions

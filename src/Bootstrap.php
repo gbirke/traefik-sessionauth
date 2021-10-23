@@ -6,9 +6,11 @@ namespace Birke\TraefikSessionAuth;
 
 use DI\Container;
 use Psr\Container\ContainerInterface;
+use Slim\Middleware\Session;
 
 use function DI\env;
 use function DI\factory;
+use function DI\create;
 
 class Bootstrap
 {
@@ -21,17 +23,26 @@ class Bootstrap
             $builder->writeProxiesToFile(true, __DIR__ . '/../var/cache');
         }
         $builder->addDefinitions([
+            // Environemnt config
             "cfg.cookieName" => env('COOKIE_NAME', 'auth-login'),
             "cfg.users" => env('USERS'),
             "cfg.cookieDomain" => env('COOKIE_DOMAIN', ''),
-            "config" => factory(function (ContainerInterface $c) {
+
+            // Instances
+            Config::class => factory(function (ContainerInterface $c) {
                 return new Config(
-                    $c->get('cfg.cookieDomain'),
                     $c->get('cfg.users'),
-                    $c->get('cfg.cookieName'),
                 );
             }),
-
+            "middlewares.session" => factory(function (ContainerInterface $c): Session {
+                $cookieDomain = $c->get('cfg.cookieDomain');
+                // add dot to make sure we have a cookie for all subdomains
+                $cookieDomain = $cookieDomain ? '.' . trim($cookieDomain, ".\n\r\t\v\0") : '';
+                return new Session([
+                    'name' => $c->get('cfg.cookieName'),
+                    'domain' => $cookieDomain
+                ]);
+            }),
         ]);
         return $builder->build();
     }
