@@ -46,8 +46,8 @@ To use the pre-commit git hooks, run
 	vendor/bin/captainhook install
 
 ## Planned future features
-* Redirection parameter to return to original page
 * Add Dockerfile and build
+* Make base path of auth configurable and concat base path with routes.
 * Add Page titles (Login page and index page) to config
 * Unit tests and static analysis
 * Add CI (GitHub Actions)

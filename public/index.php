@@ -25,6 +25,10 @@ $app->get('/auth', function (Request $request, Response $response, $args) {
         $response->getBody()->write("OK");
         return $response;
     }
+    $queryParams = $request->getQueryParams();
+    if (!empty($queryParams['redirect'])) {
+        $_SESSION['redirectAfterLogin'] = $queryParams['redirect'];
+    }
     return $response->withStatus(302)
         ->withHeader("Location", "/login");
 });
@@ -51,10 +55,13 @@ $app->post('/login', function (Request $request, Response $response, $args) {
     $users = $this->get(Users::class);
     if ($users->userExists($username) && $users->verifyPassword($username, $password)) {
         $_SESSION['username'] = $username;
-        $query = $request->getQueryParams();
-        // TODO redirect with query params, to x-forwarded-host or to FQDN
+        $redirectTarget = '/';
+        if (!empty($_SESSION['redirectAfterLogin'])) {
+            $redirectTarget = $_SESSION['redirectAfterLogin'];
+            unset($_SESSION['redirectAfterLogin']);
+        }
         return $response->withStatus(302)
-            ->withHeader("Location", "/");
+            ->withHeader("Location", $redirectTarget);
     }
 
     $response->getBody()->write(
