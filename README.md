@@ -23,7 +23,17 @@ command:
 	php -r 'echo password_hash("your_password_here", PASSWORD_DEFAULT);'
 
 
-**TODO:** describe PHP session tuning
+**TODO:** describe PHP session tuning for longer-lived sessions and using
+different storage mechanisms
+
+### Overriding templates
+
+If you want to show some branding on your page, use different styling or
+wording, you can edit the files in the [`templates`](templates/)
+directory.
+
+**TODO:** describe how to override templates when using Docker
+
 
 ## Traefik setup
 
@@ -37,11 +47,11 @@ To use the pre-commit git hooks, run
 
 ## Planned future features
 * Redirection parameter to return to original page
-* Unit tests and static analysis
-* Templating for user-accessible pages
-* Show form again when login fails
-* Add CI (GitHub Actions)
 * Add Dockerfile and build
+* Add Page titles (Login page and index page) to config
+* Unit tests and static analysis
+* Add CI (GitHub Actions)
+* Expose more session configuration
 * Support for CORS headers instead of central cookie domain
 * "Remember me" cookie for more independence from PHP sessions
 

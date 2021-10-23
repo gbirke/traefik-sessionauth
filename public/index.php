@@ -32,7 +32,12 @@ $app->get('/auth', function (Request $request, Response $response, $args) {
 // Status page
 $app->get('/', function (Request $request, Response $response, $args) {
     $username = $_SESSION['username'] ?? '';
-    $response->getBody()->write($username ? "Logged in as $username" : "You are not logged in");
+    $response->getBody()->write(
+        $this->get('template')->renderToString(
+            'index.latte',
+            ['username' => $username]
+        )
+    ) ;
     return $response;
 });
 
@@ -52,24 +57,25 @@ $app->post('/login', function (Request $request, Response $response, $args) {
             ->withHeader("Location", "/");
     }
 
-    $response->getBody()->write("Login failed");
+    $response->getBody()->write(
+        $this->get('template')->renderToString(
+            'login.latte',
+            [
+                'username' => $username,
+                'message' => 'Login failed'
+            ],
+        )
+    );
     return $response->withStatus(401);
 });
 
 // Show login form
 $app->get('/login', function (Request $request, Response $response, $args) {
-    $response->getBody()->write(<<<LOGINFORM
-		<html>
-			<head><title>Login</title></head>
-			<body>
-				<form action="/login" method="post">
-					<div><label for="username">User:</label><input name=username id=username></div>
-					<div><label for="password">Password:</label><input name=password id=password type=password></div>
-					<div><input type=submit value="Login"></div>
-				<form>
-			</body>
-		</html>
-		LOGINFORM
+    $response->getBody()->write(
+        $this->get('template')->renderToString(
+            'login.latte',
+            ['username' => '', 'message' => ''],
+        )
     );
     return $response;
 });

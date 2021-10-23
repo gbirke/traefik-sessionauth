@@ -1,0 +1,12 @@
+{layout 'base_layout.latte'}
+
+{block content}
+	<h1>Login Status</h1>
+	{if $username}
+		<p> Logged in as <code>{$username}</code> </p>
+		<p><a href="/logout">Log out</a></p>
+	{else}
+		<p>You are not logged in.</p>
+		<p><a href="/login">Log in</a></p>
+	{/if}
+{/block}

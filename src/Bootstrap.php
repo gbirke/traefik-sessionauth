@@ -23,7 +23,10 @@ class Bootstrap
             $builder->writeProxiesToFile(true, __DIR__ . '/../var/cache');
         }
         $builder->addDefinitions([
-            // Environemnt config
+            // Values
+            "environment.name" => $environment,
+
+            // Environment variables
             "cfg.cookieName" => env('COOKIE_NAME', 'auth-login'),
             "cfg.users" => env('USERS'),
             "cfg.cookieDomain" => env('COOKIE_DOMAIN', ''),
@@ -43,6 +46,16 @@ class Bootstrap
                     'domain' => $cookieDomain
                 ]);
             }),
+            "template" => factory(function (ContainerInterface $c): \Latte\Engine {
+                $latte = new \Latte\Engine();
+                $latte->setLoader(new \Latte\Loaders\FileLoader(__DIR__ . '/../templates/'));
+                $latte->setTempDirectory(__DIR__ . '/../var/cache');
+
+                if ($c->get('environment.name') === 'production') {
+                    $latte->setAutoRefresh(false);
+                }
+                return $latte;
+            })
         ]);
         return $builder->build();
     }

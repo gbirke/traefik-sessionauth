@@ -1,0 +1,19 @@
+{layout 'base_layout.latte'}
+
+{block content}
+	<h1>Log In</h1>
+	<p n:if="$message" style="color:red">{$message}</p>
+	<form action="/login" method="post" class="pure-form pure-form-stacked">
+		<div class="pure-control-group">
+			<label for="username">User:</label>
+			<input name="username" id="username" value="{$username}">
+		</div>
+		<div class="pure-control-group">
+			<label for="password">Password:</label>
+			<input name="password" id="password" type="password">
+		</div>
+		<div class="pure-controls">
+			<button class="pure-button pure-button-primary" type=submit>Login</button>
+		</div>
+	<form>
+{/block}
