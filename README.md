@@ -29,6 +29,12 @@ command:
 
 **TODO:** describe setup
 
+## Development
+
+To use the pre-commit git hooks, run
+
+	vendor/bin/captainhook install
+
 ## Planned future features
 * Redirection parameter to return to original page
 * Templating for user-accessible pages
@@ -36,3 +42,4 @@ command:
 * Add Dockerfile and build
 * Support for CORS headers instead of central cookie domain
 * "Remember me" cookie for more independence from PHP sessions
+
