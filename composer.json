@@ -2,5 +2,12 @@
     "require": {
         "slim/slim": "^4.9",
         "slim/psr7": "^1.5"
-    }
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.6"
+    },
+	"scripts": {
+		"cs": "phpcs --standard=PSR12 public/index.php",
+		"fix-cs": "phpcbf --standard=PSR12 public/index.php"
+	}
 }
