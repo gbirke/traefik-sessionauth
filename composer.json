@@ -1,4 +1,16 @@
 {
+    "name": "birke/traefik-session-auth",
+    "description": "A session-based authentication app for Traefik's forwardAuth middleware",
+    "keywords": ["authentication","traefik","session"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gabriel Birke",
+            "email": "gb@birke-software.de",
+            "homepage": "https://gabriel-birke.de",
+            "role": "Developer"
+        }
+    ],
 	"autoload": {
 		"psr-4": {
 			"Birke\\TraefikSessionAuth\\": "src/"
