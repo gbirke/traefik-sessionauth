@@ -22,10 +22,6 @@ command:
 
     php -r 'echo password_hash("your_password_here", PASSWORD_DEFAULT);'
 
-
-**TODO:** describe PHP session tuning for longer-lived sessions and using
-different storage mechanisms
-
 ### Overriding templates
 
 If you want to show some branding on your page, use different styling or
@@ -90,14 +86,16 @@ To use the pre-commit git hooks, run
 
     vendor/bin/captainhook install
 
-## Planned future features
+## Possible future features
 * Make base path of auth configurable and concat base path with routes.
 * Add Page titles (Login page and index page) to config
 * Unit tests and static analysis (see
     https://odan.github.io/2020/06/09/slim4-testing.html for how to test)
-* Add CI (GitHub Actions) to test and build dockerfile
+* Add CI (GitHub Actions) to test and build Docker image
 * Expose more session configuration
 * Support for CORS headers instead of central cookie domain
 * "Remember me" cookie for more independence from PHP sessions
+* Describe PHP session tuning for longer-lived sessions and using
+    different storage mechanisms
 * Rewrite in Go to get rid of the need for a FastCGI proxy.
 
