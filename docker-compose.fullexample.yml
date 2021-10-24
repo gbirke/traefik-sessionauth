@@ -29,7 +29,9 @@ services:
           dockerfile: ./docker/app/Dockerfile
           target: app
         volumes:
-          - ./docker/example/env:/app/.env
+          - ./docker/example/env:/app/.env:ro
+            # An example of how to override base layout, e.g. to adapt to your page design
+          - ./docker/example/templates/base_layout.latte:/app/templates/base_layout.latte:ro
         networks:
           - proxy
 

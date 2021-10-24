@@ -32,8 +32,8 @@ If you want to show some branding on your page, use different styling or
 wording, you can edit the files in the [`templates`](templates/)
 directory.
 
-**TODO:** describe how to override templates when using Docker
-
+The file [`docker-compose.fullexample.yml`](docker-compose.fullexample.yml)
+shows and example how to use docker volume mounts to override templates
 
 ## Running the application
 
