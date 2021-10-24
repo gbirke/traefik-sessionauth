@@ -1,0 +1,7 @@
+# Main domain that all your subdomains point to.
+COOKIE_DOMAIN="example.docker"
+
+# User names and password hashes
+# Create the hashes with the password_hash php function
+# Password of admin is "badpassword"
+USERS="admin:$2y$10$9mtv3YVLjc.SLSs93CxuF.qmpLlCH5KB5Wo0ksPCuO7n1ZT00ix06"
