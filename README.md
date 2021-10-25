@@ -80,6 +80,14 @@ entries to your `/etc/hosts` file:
                                                      +---------------------+
 ```
 
+### Pitfalls to look out for when configuring for your own site
+
+Make sure you're using the right protocol for the forwardAuth middleware
+address! If you set it to `http` and your authentication URL is `https`,
+every forwardAuth request will fail, even when you're logged in, because
+Traefik will redirect to the HTTPs protocol, which looks like a failure to
+forwardAuth.
+
 ## Development
 
 To use the pre-commit git hooks, run
