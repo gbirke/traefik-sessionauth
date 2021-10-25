@@ -96,6 +96,8 @@ To use the pre-commit git hooks, run
 
 ## Possible future features
 * Make base path of auth configurable and concat base path with routes.
+* Use encrypted cookies instead of session - this will make the app
+	storage-independent and allows for longer-lasting authentication.
 * Add Page titles (Login page and index page) to config
 * Unit tests and static analysis (see
     https://odan.github.io/2020/06/09/slim4-testing.html for how to test)
