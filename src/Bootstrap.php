@@ -10,7 +10,6 @@ use Slim\Middleware\Session;
 
 use function DI\env;
 use function DI\factory;
-use function DI\create;
 
 class Bootstrap
 {
