@@ -108,4 +108,5 @@ To use the pre-commit git hooks, run
 * Describe PHP session tuning for longer-lived sessions and using
     different storage mechanisms
 * Rewrite in Go to get rid of the need for a FastCGI proxy.
-
+* Serve SVG image badge that shows login status. Configurable SVG template
+	to allow perfect integration in site.
