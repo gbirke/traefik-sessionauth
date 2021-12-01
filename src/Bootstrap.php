@@ -13,6 +13,9 @@ use function DI\factory;
 
 class Bootstrap
 {
+    // 30 minutes
+    private const DEFAULT_COOKIE_LIFETIME = 1800;
+
     public static function createContainer(string $environment): Container
     {
         $builder = new \DI\ContainerBuilder();
@@ -29,6 +32,7 @@ class Bootstrap
             "cfg.cookieName" => env('COOKIE_NAME', 'auth-login'),
             "cfg.users" => env('USERS'),
             "cfg.cookieDomain" => env('COOKIE_DOMAIN', ''),
+            "cfg.cookieLifetime" => env('SESSION_LIFETIME', self::DEFAULT_COOKIE_LIFETIME),
 
             // Instances
             Users::class => factory(function (ContainerInterface $c) {
@@ -40,9 +44,14 @@ class Bootstrap
                 $cookieDomain = $c->get('cfg.cookieDomain');
                 // add dot to make sure we have a cookie for all subdomains
                 $cookieDomain = $cookieDomain ? '.' . trim($cookieDomain, ".\n\r\t\v\0") : '';
+                // Make sure we have a non-zero default for the lifetime
+                $cookieLifetime = intval($c->get('cfg.cookieLifetime')) ?: self::DEFAULT_COOKIE_LIFETIME;
                 return new Session([
                     'name' => $c->get('cfg.cookieName'),
-                    'domain' => $cookieDomain
+                    'domain' => $cookieDomain,
+                    'autorefresh' => true,
+                    'secure' => true,
+                    'lifetime' => $cookieLifetime
                 ]);
             }),
             "template" => factory(function (ContainerInterface $c): \Latte\Engine {

@@ -22,6 +22,12 @@ command:
 
     php -r 'echo password_hash("your_password_here", PASSWORD_DEFAULT);'
 
+With the setting `SESSION_LIFETIME` you can change how long the session
+persists between page interactions. Whenever Traefik queries the 
+authentication of the logged in user, the application sets the session
+expiry to the current time plus lifetime. The default lifetime is 30
+minutes (1800 seconds).
+
 ### Overriding templates
 
 If you want to show some branding on your page, use different styling or
@@ -102,9 +108,6 @@ To use the pre-commit git hooks, run
     vendor/bin/captainhook install
 
 ## Possible future features
-* Make session lifetime configurable (currently times out after 20 minutes)
-* Auto-renew session cookie
-* Make session-cookie http-only
 * Make base path of auth configurable and concat base path with routes.
 * Use encrypted cookies instead of session - this will make the app
 	storage-independent and allows for longer-lasting authentication.
