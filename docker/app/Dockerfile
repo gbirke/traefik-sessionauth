@@ -1,3 +1,4 @@
+# Build image to install dependencies
 FROM composer as vendor
 
 COPY composer.json /app/
@@ -10,7 +11,7 @@ COPY . /app
 
 RUN composer dump-autoload --no-dev --optimize --classmap-authoritative
 
-
+# Development image
 FROM php:8-fpm-alpine as app
 
 WORKDIR /app
@@ -20,3 +21,10 @@ COPY . /app
 COPY --from=vendor /app/vendor /app/vendor
 
 RUN chown -R www-data /app/var
+
+# Configure production settings for safety and speed
+FROM app as app-production
+
+RUN docker-php-ext-install opcache \
+	&& ln -s /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+

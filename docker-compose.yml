@@ -7,7 +7,10 @@ services:
           dockerfile: ./docker/app/Dockerfile
           target: app
         volumes:
+          # Mount credentials file into container
           - ./.env:/app/.env
+          # For development, use the following volume mount instead:
+          # - .:/app
 
     nginx:
         image: nginx:stable-alpine

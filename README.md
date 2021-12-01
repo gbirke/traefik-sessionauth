@@ -16,7 +16,7 @@ have the domains `app.example.com` and `auth.example.com` the
 `COOKIE_DOMAIN` should be `example.com`.
 
 `USERS` is a space-separated list of user names and passwords (separated
-with a colon). The passwords must be hashed with PHPs `password_hash`
+with a colon). You must hash passwords with PHPs `password_hash`
 function. To hash a password on the command line you can run the following
 command:
 
@@ -37,6 +37,13 @@ Run `docker-compose up` to run the application as a standalone application
 on [localhost:8090](http://localhost:8090/). On its own, it's not very
 useful but you can use the `docker-compose.yml` setup for development or
 to try out the functionality without a Traefik setup.
+
+### Building the docker image
+The Dockerfile in `docker/app/Dockerfile` is a 
+[multi-stage](https://docs.docker.com/develop/develop-images/multistage-build/)
+Dockerfile that returns a production-ready image (using opcache and PHP
+production settings). The `docker-compose.yml` file builds the development
+image without opcache.
 
 ## Traefik setup
 
@@ -95,6 +102,9 @@ To use the pre-commit git hooks, run
     vendor/bin/captainhook install
 
 ## Possible future features
+* Make session lifetime configurable (currently times out after 20 minutes)
+* Auto-renew session cookie
+* Make session-cookie http-only
 * Make base path of auth configurable and concat base path with routes.
 * Use encrypted cookies instead of session - this will make the app
 	storage-independent and allows for longer-lasting authentication.
