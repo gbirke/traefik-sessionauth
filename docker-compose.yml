@@ -5,16 +5,12 @@ services:
         build:
           context: .
           dockerfile: ./docker/app/Dockerfile
-          target: app
+          target: app-production
         volumes:
           # Mount credentials file into container
           - ./.env:/app/.env
           # For development, use the following volume mount instead:
           # - .:/app
-
-    nginx:
-        image: nginx:stable-alpine
-        volumes:
-          - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
         ports:
           - 8090:80
+
